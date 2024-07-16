@@ -34,65 +34,37 @@ searchPartsForMainRoom()
 Tab:AddButton({
     Name = "Esp Ghost",
     Callback = function()
-    -- Services
 local RunService = game:GetService("RunService")
-local PlayersService = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
 
--- Variables
-local modelName = "Ghost" -- Name of the model to track
-local BillboardGui
-local Camera = game.Workspace.CurrentCamera
-local ModelFound = false
+local targetName = "Ghost"
+local targetPartName = "Head" -- Change this to the appropriate part name if it's not Torso
 
--- Function to create BillboardGui on HumanoidRootPart of the model
-local function createBillboardGui(model)
-    BillboardGui = Instance.new("BillboardGui")
-    BillboardGui.Size = UDim2.new(5, 0, 5, 0) -- Adjust size as needed
-    BillboardGui.Adornee = model.HumanoidRootPart
-    BillboardGui.StudsOffset = Vector3.new(0, 5, 0) -- Offset the BillboardGui slightly above the model
-    BillboardGui.Parent = model.HumanoidRootPart
-
-    local espTextLabel = Instance.new("TextLabel")
-    espTextLabel.Size = UDim2.new(1, 0, 1, 0)
-    espTextLabel.Text = modelName
-    espTextLabel.TextColor3 = Color3.new(1, 0, 0)
-    espTextLabel.TextScaled = true
-    espTextLabel.Parent = BillboardGui
+local function createESP(targetPart)
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Name = "ESP_Billboard"
+    billboardGui.Adornee = targetPart
+    billboardGui.AlwaysOnTop = true
+    billboardGui.Size = UDim2.new(0, 50, 0, 50)
+    
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.Text = targetName
+    textLabel.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    textLabel.BackgroundTransparency = 0.3
+    textLabel.TextColor3 = Color3.fromRGB(0, 0, 0) -- Red color
+    textLabel.TextScaled = true
+    
+    textLabel.Parent = billboardGui
+    billboardGui.Parent = targetPart
 end
 
--- Function to update BillboardGui position and visibility
-local function updateEsp(model)
-    if model and model:IsA("Model") and model:FindFirstChild("HumanoidRootPart") then
-        if not BillboardGui then
-            createBillboardGui(model)
-        else
-            BillboardGui.Adornee = model.HumanoidRootPart
-        end
-        BillboardGui.Enabled = true
-        ModelFound = true
-    else
-        ModelFound = false
-        if BillboardGui then
-            BillboardGui:Destroy()
-            BillboardGui = nil
-        end
-    end
-end
-
--- Main loop to continuously check for the model
-local function mainLoop()
-    while true do
-        local model = Workspace:FindFirstChild(modelName)
-        updateEsp(model)
-        wait(1) -- Adjust the wait time as needed
-    end
-end
-
--- Connect the main loop to RunService
 RunService.RenderStepped:Connect(function()
-    if not ModelFound then
-        mainLoop()
+    local target = workspace:FindFirstChild(targetName)
+    if target then
+        local targetPart = target:FindFirstChild(targetPartName)
+        if targetPart and not targetPart:FindFirstChild("ESP_Billboard") then
+            createESP(targetPart)
+        end
     end
 end)
     end
