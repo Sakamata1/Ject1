@@ -75,6 +75,51 @@ Tab:AddButton({
     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
     end
 })
+Tab:AddButton({
+    Name = "WalkSpeed",
+    Callback = function()
+    local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local ghostModelName = "Ghost"
+local humanoidName = "Humanoid"
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "WalkSpeedGui"
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 50)
+frame.Position = UDim2.new(0, 10, 0, 10)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 1
+frame.Parent = screenGui
+
+local textLabel = Instance.new("TextLabel")
+textLabel.Size = UDim2.new(1, 0, 1, 0)
+textLabel.BackgroundTransparency = 1
+textLabel.TextColor3 = Color3.new(1, 1, 1) -- White color
+textLabel.TextScaled = true
+textLabel.Parent = frame
+
+local function updateWalkSpeed()
+    local ghost = workspace:FindFirstChild(ghostModelName)
+    if ghost then
+        local humanoid = ghost:FindFirstChild(humanoidName)
+        if humanoid and humanoid:IsA("Humanoid") then
+            textLabel.Text = "WalkSpeed: " .. tostring(humanoid.WalkSpeed)
+        else
+            textLabel.Text = "Humanoid not found"
+        end
+    else
+        textLabel.Text = "Ghost not found"
+    end
+end
+
+RunService.RenderStepped:Connect(updateWalkSpeed)
+    end
+})
 -- Dropdown:Refresh(List<table>,true)
 --Dropdown:Set("dropdown option")
 OrionLib:Init()
