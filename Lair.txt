@@ -120,6 +120,20 @@ end
 RunService.RenderStepped:Connect(updateWalkSpeed)
     end
 })
+Tab:AddButton({
+    Name = "Cursed Object",
+    Callback = function()
+    local cursed = workspace:FindFirstChild("SummoningCircle")
+    local Ouija = workspace:FindFirstChild("OuijaBoard")
+ if cursed then 
+     print("SummoningCircle")
+ elseif Ouija then
+     print("OuijaBoard")
+ else 
+     print("Tarot")
+    end
+end
+})
 -- Dropdown:Refresh(List<table>,true)
 --Dropdown:Set("dropdown option")
 OrionLib:Init()
