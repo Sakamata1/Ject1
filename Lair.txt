@@ -32,6 +32,7 @@ while true do
     checkTemperature()
     wait(5) -- Check every 5 seconds, adjust as needed
 end
+ end
 })
 Tab:AddButton({
     Name = "Esp Ghost",
