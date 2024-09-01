@@ -14,22 +14,24 @@ OrionLib:MakeNotification({
 Tab:AddButton({
 	Name = "Show Main Room",
 	Callback = function()
-      	local map = workspace:WaitForChild("Map")
-local zones = map:WaitForChild("Zones")
+local zonesFolder = workspace:WaitForChild("Map"):WaitForChild("Zones")
 
-local function searchPartsForMainRoom()
-    for _, part in ipairs(zones:GetChildren()) do
-        if part:IsA("BasePart") then
-            local isMainRoomValue = part:FindFirstChild("IsMainRoom")
-            if isMainRoomValue and isMainRoomValue:IsA("BoolValue") and isMainRoomValue.Value == true then
-                print("Main Room Part: " .. part.Name)
+local function checkTemperature()
+    for _, zone in pairs(zonesFolder:GetDescendants()) do
+        if zone:IsA("NumberValue") and zone.Name == "_____Temperature" then
+            if zone.Value < 2 then
+                print("Parent part name: " .. zone.Parent.Name)
             end
         end
     end
 end
 
-searchPartsForMainRoom()
-  	end    
+checkTemperature()
+
+while true do
+    checkTemperature()
+    wait(5) -- Check every 5 seconds, adjust as needed
+end
 })
 Tab:AddButton({
     Name = "Esp Ghost",
